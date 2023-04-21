@@ -1,0 +1,69 @@
+<div class="card flex justify-content-center">
+  <p-button 
+    icon="pi pi-plus" 
+    label="Ajouter une personne" 
+    (click)="showDialog()"
+  ></p-button>
+
+  <p-dialog 
+    header="Ajouter un utilisateur" 
+    [(visible)]="visible" 
+    [modal]="true" 
+    [resizable]="false"
+    [draggable]="false" 
+    [style]="{width: '450px'}"
+  >
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label for="first_name" class="font-bold block mb-2">Prénom(s)</label>
+        <input 
+          pInputText  
+          id="first_name" 
+          type="text"
+          formControlName="firstName"
+          placeholder="John"
+          class="w-full"
+          required
+        >
+      </div>
+      <div class="field">
+        <label for="last_name" class="font-bold block mb-2">Nom</label>
+        <input
+          pInputText
+          id="last_name" 
+          type="text"
+          formControlName="lastName"
+          placeholder="Doe"
+          class="w-full"
+          required
+        >
+      </div>
+      <div class="field">
+        <label for="age" class="font-bold block mb-2">Age</label>
+        <input 
+          pInputText
+          id="age" 
+          type="number"
+          formControlName="age"
+          placeholder="30"
+          class="w-full"
+          required
+        >
+      </div>
+      <div class="field">
+        <label for="department" class="font-bold block mb-2">Département</label>
+        <p-dropdown 
+          formControlName="department"
+          id="department"
+          [options]="departments" 
+          optionLabel="designation" 
+          styleClass="w-full" 
+          placeholder="Selectionner département">
+        </p-dropdown>
+      </div>
+      <div class="field">
+        <p-button label="Enregistrer" styleClass="w-full" type="Submit"></p-button>
+      </div>
+    </form>
+  </p-dialog>
+</div>

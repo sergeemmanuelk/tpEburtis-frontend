@@ -1,0 +1,91 @@
+<div class="card">
+    <div class="flex flex-wrap align-items-center justify-content-center card-container yellow-container">
+        <div class="bg-yellow-100 w-200rem m-3 border-round">
+
+            <p-card header="Liste de personne">
+                <div class="flex justify-content-start">
+                    <app-add-form (personEvent)="sendToParent($event)" [departments]="departments"></app-add-form>
+                </div>
+                <p class="m-0 mt-3">
+                    <p-table [value]="persons" [tableStyle]="{ 'min-width': '80rem' }" [paginator]="true" [rows]="5"
+                        [showCurrentPageReport]="true"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [rowsPerPageOptions]="[5, 10, 15]" [globalFilterFields]="['person.age']">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Id</th>
+                                <th>Prenom(s)</th>
+                                <th pSortableColumn="lastName">
+                                    Nom
+                                    <p-sortIcon field="lastName"></p-sortIcon>
+                                </th>
+                                <th>
+                                    Age
+                                    <p-columnFilter type="numeric" field="age" display="menu"></p-columnFilter>
+                                </th>
+                                <th>Département</th>
+                                <th>Action(s)</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-person>
+                            <tr>
+                                <td>{{ person.id }}</td>
+                                <td>{{ person.firstName }}</td>
+                                <td>{{ person.lastName }}</td>
+                                <td>{{ person.age }}</td>
+                                <td>{{ person.department.designation }}</td>
+                                <td>
+                                    <p-button icon="pi pi-user-edit" styleClass="p-button-rounded p-button-outlined"
+                                        class="rigth-50" (click)="showDialog(person)">
+                                    </p-button>
+                                    &nbsp;
+                                    <p-button icon="pi pi-trash" styleClass="p-button-rounded p-button-danger"
+                                        (click)="sendPersonIdToParent(person)">
+                                    </p-button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="paginatorleft">
+                            <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                        <ng-template pTemplate="paginatorright">
+                            <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                    </p-table>
+                </p>
+            </p-card>
+        </div>
+    </div>
+</div>
+
+<p-dialog header="Modifier une personne" [(visible)]="visible" [modal]="true" [resizable]="false" [draggable]="false"
+    [style]="{width: '450px'}">
+    <form [formGroup]="form" (ngSubmit)="sendPersonToUpdateToParent()">
+        <div class="field">
+            <label for="first_name" class="font-bold block mb-2">Prenom(s)</label>
+            <input id="first_name" pInputText [(ngModel)]="personSelected!.firstName" type="text"
+                formControlName="firstName" placeholder="Prenom(s)"
+                class="w-full">
+        </div>
+        <div class="field">
+            <label for="last_name" class="font-bold block mb-2">Nom</label>
+            <input id="last_name" pInputText [(ngModel)]="personSelected!.lastName" type="text"
+                formControlName="lastName" placeholder="Nom"
+                class="w-full">
+        </div>
+        <div class="field">
+            <label for="age" class="font-bold block mb-2">Age</label>
+            <input id="age" pInputText [(ngModel)]="personSelected!.age" type="number" formControlName="age"
+                placeholder="Age"
+                class="w-full">
+        </div>
+        <div class="field">
+            <label for="department" class="font-bold block mb-2">Département</label>
+            <p-dropdown [options]="departments" [(ngModel)]="personSelected.department" formControlName="department"
+                styleClass="w-full" optionLabel="designation" id="department"></p-dropdown>
+        </div>
+        <div class="field">
+            <p-button label="Modifier" styleClass="w-full p-button-success" type="Submit"></p-button>
+        </div>
+    </form>
+</p-dialog>
